@@ -1,10 +1,10 @@
+import './style.css';
+
 import { Knight } from "./knight.js";
 import { findShortestPath } from "./shortestPath.js";
+import { BOARD_SIZE } from "./board.js";
 
-
-const BOARD_SIZE = 8;
-
-let S = Knight(1, 1);
-let D = Knight(4, 6);
+let S = Knight(0, 0);
+let D = Knight(3, 3);
 
 console.log(findShortestPath(BOARD_SIZE, S, D));
