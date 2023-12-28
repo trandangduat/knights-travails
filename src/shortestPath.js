@@ -1,8 +1,6 @@
 import { rowDir, colDir } from "./knight.js";
+import { isInsideBoard } from "./board.js";
 
-function isInsideBoard (x, y, N) {
-  return (x >= 0 && y >= 0 && x < N && y < N);
-}
 
 function findShortestPath (N, S, D) {
   // N: size of the board

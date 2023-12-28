@@ -1,1 +1,57 @@
 @import 'reset.css';
+
+:root {
+  --dark-cell: #779954;
+  --bright-cell: #e9edcc;
+  --highlight-cell: #f4f680;
+  --board-size: 90vh;
+}
+
+#board-container {
+  display: flex;
+  aspect-ratio: 1/1;
+  flex-direction: column;
+  width: var(--board-size);
+  margin: auto;
+}
+
+#board-container .row {
+  display: flex;
+}
+
+.cell.highlight {
+  background: #f4f680;
+}
+
+.cell.black {
+  background: var(--dark-cell);
+}
+
+.cell {
+  aspect-ratio: 1/1;
+  flex: 1;
+  background: var(--bright-cell);
+  position: relative;
+}
+
+.cell > .guide-dot {
+  width: 35%;
+  aspect-ratio: 1/1;
+  background: rgb(0 0 0 / 10%);
+  display: none;
+  border-radius: 100%;
+  position: relative;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.piece {
+  aspect-ratio: 1/1;
+  width: calc(var(--board-size) / 8);
+  position: absolute;
+  z-index: 9999;
+  cursor: -webkit-grab;
+}
+
+
