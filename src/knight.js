@@ -5,6 +5,7 @@ import {
   moveHistory,
   destination,
   afterPlayerTurn,
+  shortestPath,
 } from "./DOM.js";
 import { 
   isInsideBoard, 
@@ -17,8 +18,8 @@ import {
 let rowDir = [-2, -1, 1, 2,  2,  1, -1, -2];
 let colDir = [ 1,  2, 2, 1, -1, -2, -2, -1];
 
-function Knight (x, y) {
-  return { x, y }; 
+function Knight (row, col) {
+  return { row, col }; 
 }
 
 function knightPieceDOM (cellRow = 0, cellCol = 0, isBlack = false) {
@@ -101,10 +102,16 @@ function handleKnightPiece (event) {
       moveHistory.push(cellPos);
       movingToCell(cellPos.row, cellPos.col);
       piece.setAttribute("data-count", moveHistory.length);
+      // If we reach the destination
       if (cellPos.row === destination.row && cellPos.col === destination.col) {
-        setTimeout(afterPlayerTurn, 100);
+        setTimeout(afterPlayerTurn.bind(null, true), 100);
         clearTimeout();
       }
+      // If the number of moves exceeds the smallest number of moves needed
+      else if (moveHistory.length >= shortestPath.length) {
+        setTimeout(afterPlayerTurn.bind(null, false), 100);
+        clearTimeout();
+      }      
     } else {
       movingToCell(initCell.row, initCell.col);
     }
