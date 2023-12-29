@@ -3,8 +3,12 @@
 :root {
   --dark-cell: #779954;
   --bright-cell: #e9edcc;
-  --highlight-cell: #f4f680;
+  --highlight-cell: rgb(205 191 0 / 62%); 
   --board-size: 90vh;
+}
+
+* {
+  box-sizing: none;
 }
 
 #board-container {
@@ -13,6 +17,7 @@
   flex-direction: column;
   width: var(--board-size);
   margin: auto;
+  position: relative;
 }
 
 #board-container .row {
@@ -20,7 +25,7 @@
 }
 
 .cell.highlight {
-  background: #f4f680;
+  background: var(--highlight-cell)!important;
 }
 
 .cell.black {
@@ -32,6 +37,8 @@
   flex: 1;
   background: var(--bright-cell);
   position: relative;
+  /* border: 4px solid; */
+  /* border-color: transparent; */
 }
 
 .cell > .guide-dot {

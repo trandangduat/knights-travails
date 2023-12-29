@@ -6,12 +6,16 @@ function isInsideBoard (row, col, N = BOARD_SIZE) {
 }
 
 function toggleHighlight (cellRow, cellCol) {
-  let cell = document.querySelector(`.cell[data-row="${cellRow}"][data-col="${cellCol}"]`);
+  let cell = getCellDOM(cellRow, cellCol);
   if (cell.classList.contains("highlight")) {
     cell.classList.remove("highlight");
   } else {
     cell.classList.add("highlight");
   }
+}
+
+function getCellDOM (cellRow, cellCol) {
+  return document.querySelector(`.cell[data-row="${cellRow}"][data-col="${cellCol}"]`);
 }
 
 function createBoardDOM() {
@@ -42,4 +46,5 @@ export {
   isInsideBoard,
   toggleHighlight,
   createBoardDOM,
+  getCellDOM,
 };
