@@ -1,4 +1,5 @@
 @import 'reset.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap');
 
 :root {
   --dark-cell: #779954;
@@ -9,6 +10,10 @@
 
 * {
   box-sizing: none;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
 }
 
 #board-container {
@@ -61,4 +66,15 @@
   cursor: -webkit-grab;
 }
 
-
+.knight::after {
+  content: attr(data-count);
+  background: black;
+  display: block;
+  position: absolute;
+  color: white;
+  right: 0;
+  padding: 5px;
+  font-size: 1.5rem;
+  border-radius: 100%;
+  font-weight: bold;
+}

@@ -18,6 +18,14 @@ function getCellDOM (cellRow, cellCol) {
   return document.querySelector(`.cell[data-row="${cellRow}"][data-col="${cellCol}"]`);
 }
 
+function boardCellAtPosition (x, y) {
+  let row = (y + 1) / getCellDOM(0, 0).offsetHeight; // +1 to avoid decimal error, position got from offsetHeight is round to interger
+  let col = (x + 1) / getCellDOM(0, 0).offsetWidth;
+  row = parseInt(row);
+  col = parseInt(col);
+  return {row, col};
+}
+
 function createBoardDOM() {
   for (let i = 0; i < BOARD_SIZE; i++) {
     const boardRow = document.createElement("div");
@@ -40,6 +48,15 @@ function createBoardDOM() {
   return boardContainer;
 }
 
+function newPiece (pieceImage, cellRow = 0, cellCol = 0) {
+  let piece = document.createElement("div");
+  piece.classList.add("piece");
+  piece.style.transform = `translate(${cellCol * 100}%, ${cellRow * 100}%)`;
+  piece.style.background = `url(${pieceImage})`;
+  piece.style.background += ` no-repeat center/contain`;
+  return piece;
+}
+
 export {
   BOARD_SIZE,
   boardContainer,
@@ -47,4 +64,6 @@ export {
   toggleHighlight,
   createBoardDOM,
   getCellDOM,
+  boardCellAtPosition,
+  newPiece,
 };
