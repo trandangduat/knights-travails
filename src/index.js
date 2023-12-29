@@ -17,34 +17,40 @@ const DOMmanip = (function() {
     const currentPieceLeft = parseFloat(piece.style.left);
     const currentPieceTop = parseFloat(piece.style.top);
     const currentPieceCell = boardCellAtPosition(currentPieceLeft, currentPieceTop);
+    const validNextMoves = []; 
     const guideDots = [];
 
     function movingTo (x, y) {
       // This assumes anchor point of the piece is in its center
-      piece.style.left = x - piece.offsetWidth / 2 + 'px';
-      piece.style.top = y - piece.offsetHeight / 2 + 'px';
+      piece.style.left = x + 'px';
+      piece.style.top = y + 'px';
     }
     
     function handleMouseMove (event) {
-      movingTo(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
+      movingTo(event.pageX - board.offsetLeft - piece.offsetWidth / 2, event.pageY - board.offsetTop - piece.offsetHeight / 2);
     }
 
     function handleMouseUp (event) {
-      // console.log("mouse up");
-      // console.log(boardCellAtPosition(event.pageX, event.pageY));
       // Place the piece in the cell under cursor
       let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
       let cell = getCellDOM(cellPos.row, cellPos.col);
+
+      // If the cell is in valid next move then place, else back to original position
+      if (validNextMoves.some(move => move.row === cellPos.row && move.col === cellPos.col)) {
+        movingTo(cell.offsetLeft, cell.offsetTop);
+      } else {
+        movingTo(currentPieceLeft, currentPieceTop);
+      }
       
-      piece.style.left = cell.offsetLeft + 'px';
-      piece.style.top = cell.offsetTop + 'px';
       // Remove unneccessary event listeners
       document.removeEventListener("mousemove", handleMouseMove);
       piece.removeEventListener("mouseup", handleMouseUp);
+      
       // Remove next move indicators (guide dots)
       guideDots.forEach((dot) => { 
         dot.style.display = "none" 
       });
+      
       // Remove Highlight
       toggleHighlight(currentPieceCell.row, currentPieceCell.col);
     }
@@ -57,23 +63,35 @@ const DOMmanip = (function() {
       return {row, col};
     }
 
+    function getValidNextMoves (pieceRow, pieceCol) {
+      for (let i = 0; i < 8; i++) {
+        let nextMoveRow = pieceRow + rowDir[i];
+        let nextMoveCol = pieceCol + colDir[i];
+        if (isInsideBoard(nextMoveRow, nextMoveCol)) {
+          validNextMoves.push({row: nextMoveRow, col: nextMoveCol});
+        } 
+      }
+    }
+    
+    // Insert all valid next moves into the array 'validNextMoves'
+    getValidNextMoves(currentPieceCell.row, currentPieceCell.col);
+    
     // Change piece position to under cursor right after "mousedown" event
-    movingTo(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
+    movingTo(event.pageX - board.offsetLeft - piece.offsetWidth / 2, event.pageY - board.offsetTop - piece.offsetHeight / 2);
+    
     // Highlight current cell the piece is in
     toggleHighlight(currentPieceCell.row, currentPieceCell.col);
+    
     // Show indicators for valid next moves
     console.log(currentPieceLeft, currentPieceTop);
     console.log(currentPieceCell);
-    for (let i = 0; i < 8; i++) {
-      let nextMoveRow = currentPieceCell.row + rowDir[i];
-      let nextMoveCol = currentPieceCell.col + colDir[i];
-      if (isInsideBoard(nextMoveRow, nextMoveCol)) {
-        // console.log(nextMoveRow, nextMoveCol);
-        let guideDot = document.querySelector(`.cell[data-row="${nextMoveRow}"][data-col="${nextMoveCol}"] > .guide-dot`);
-        guideDot.style.display = "block";
-        guideDots.push(guideDot);
-      } 
-    }
+    console.log("validNextMoves", validNextMoves);
+    validNextMoves.forEach((move) => {
+      let guideDot = document.querySelector(`.cell[data-row="${move.row}"][data-col="${move.col}"] > .guide-dot`);
+      guideDot.style.display = "block";
+      guideDots.push(guideDot);
+    })
+    
 
     // Moving along with the cursor
     document.addEventListener("mousemove", handleMouseMove);
