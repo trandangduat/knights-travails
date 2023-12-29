@@ -8,11 +8,9 @@ function Knight (x, y) {
 }
 
 function knightPieceDOM (cellRow = 0, cellCol = 0, isBlack = false) {
-  let cell = document.querySelector(`.cell[data-row="${cellRow}"][data-col="${cellCol}"]`);
   let piece = document.createElement("div");
   piece.classList.add("piece");
-  piece.style.left = cell.offsetLeft + "px";
-  piece.style.top =  cell.offsetTop + "px";
+  piece.style.transform = `translate(${cellCol * 100}%, ${cellRow * 100}%)`;
   if (!isBlack) {
     piece.style.background = `url(${whiteKnightImage})`;
   } else {
