@@ -29,6 +29,7 @@ const showShortestPathButton = document.querySelector("#show-sp")
 function DOM() {
   // Place a piece in random cell as destination 
   const desPiece = newPiece(destinationPiece, destination.row, destination.col);
+  desPiece.style.pointerEvents = "none";
   
   // Place a knight in random cell as source
   const knightPiece = knightPieceDOM(source.row, source.col);
@@ -46,6 +47,7 @@ function DOM() {
   hintPiece.setAttribute("data-count", "0");
   hintPiece.classList.add("knight");
   hintPiece.classList.add("black");
+  hintPiece.style.pointerEvents = "none";
   let hintPieceCreated = false;
   
   showShortestPathButton.addEventListener("click", (e) => {
