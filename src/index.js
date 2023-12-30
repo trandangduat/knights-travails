@@ -1,5 +1,5 @@
 import './style.css';
-import { DOM } from "./DOM.js"
+import { domManipulate } from "./DOM.js"
 
-DOM();
+domManipulate();
 

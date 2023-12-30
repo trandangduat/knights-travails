@@ -25,6 +25,9 @@ const board = createBoardDOM();
 const moveHistory = [];
 const shortestPath = findShortestPath(source, destination);
 const showShortestPathButton = document.querySelector("#show-sp")
+const undoButton = document.querySelector("#undo");
+const startButton = document.querySelector("#start-game");
+const countDownProgressBar = document.querySelector("#countdown #progress");
 
 // Add cell indicator for mouse position
 const cellBorderHover = document.createElement("div");
@@ -32,33 +35,31 @@ cellBorderHover.setAttribute("id", "hover-border");
 cellBorderHover.style.visibility = "hidden";
 board.appendChild(cellBorderHover);
 
-function DOM() {
-  
-  // Place a piece in random cell as destination 
-  const desPiece = newPiece(destinationPiece, destination.row, destination.col);
-  desPiece.style.pointerEvents = "none";
-  
-  // Place a knight in random cell as source
-  const knightPiece = knightPieceDOM(source.row, source.col);
-  knightPiece.setAttribute("data-count", "0");
-  knightPiece.classList.add("knight");
-  
-  // Append them to the board
-  board.appendChild(desPiece);
-  board.appendChild(knightPiece);
+// Place a piece in random cell as destination 
+const desPiece = newPiece(destinationPiece, destination.row, destination.col);
+desPiece.style.pointerEvents = "none";
+
+// Place a knight in random cell as source
+const knightPiece = knightPieceDOM(source.row, source.col);
+knightPiece.setAttribute("data-count", "0");
+knightPiece.classList.add("knight");
+
+// Automove the shortest path when clicking the button
+const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
+hintPiece.setAttribute("data-count", "0");
+hintPiece.classList.add("knight");
+hintPiece.classList.add("black");
+hintPiece.style.pointerEvents = "none";
+
+let hintPieceCreated = false;
+let alreadyEndGame = false;
+
+function domManipulate() {
+  appendToBoard();
 
   knightPiece.addEventListener("mousedown", handleKnightPiece);
   
-  // Automove the shortest path when clicking the button
-  const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
-  hintPiece.setAttribute("data-count", "0");
-  hintPiece.classList.add("knight");
-  hintPiece.classList.add("black");
-  hintPiece.style.pointerEvents = "none";
-  let hintPieceCreated = false;
-  
-  showShortestPathButton.addEventListener("click", (e) => {
-    // Create new piece at source 
+  showShortestPathButton.addEventListener("click", (event) => {
     if (hintPieceCreated === false) {
       board.appendChild(hintPiece);
       hintPieceCreated = true;
@@ -69,6 +70,41 @@ function DOM() {
     hintPiece.setAttribute("data-count", 0);
     autoMove(hintPiece, shortestPath); 
   });
+  
+  undoButton.addEventListener("click", (event) => {
+    undoMove(knightPiece); 
+  });
+
+  startButton.addEventListener("click", (event) => {
+    const SECONDS = 5;
+    console.log("start countDown");
+    let second = 0;
+    let milisec = 0;
+    const updateCountdown = setInterval(() => {
+      if (milisec % 1000 === 0) {
+        console.log(milisec / 1000 + " seconds");
+      }
+      if (alreadyEndGame) {
+        console.log("already end game");
+        clearTimeout(countDown);
+        clearInterval(updateCountdown);
+      }
+      milisec += 100;
+      countDownProgressBar.style.width = `${milisec / 50}%`;
+    }, 100);
+    const countDown = setTimeout(() => {
+      if (!alreadyEndGame) {
+        afterPlayerTurn(false);
+      } 
+      clearTimeout(countDown);
+      clearInterval(updateCountdown);
+    }, 1000 * SECONDS);
+  });
+}
+
+function appendToBoard() {
+  board.appendChild(desPiece);
+  board.appendChild(knightPiece);
 }
 
 function moveTo (piece, row, col) {
@@ -76,7 +112,6 @@ function moveTo (piece, row, col) {
 }
 
 function autoMove (piece, movesList) {
-  piece.style.transition = "200ms"; 
   let i = 0;
   let moving = setInterval(() => {
     if (i == movesList.length) {
@@ -91,7 +126,19 @@ function autoMove (piece, movesList) {
   }, 1000);
 }
 
+function undoMove(piece) {
+  if (moveHistory.length === 0) return;
+  moveHistory.pop();
+  if (moveHistory.length > 0) {
+    moveTo(piece, moveHistory[moveHistory.length-1].row, moveHistory[moveHistory.length-1].col);
+  } else { 
+    moveTo(piece, source.row, source.col);
+  }
+  piece.setAttribute("data-count", moveHistory.length);
+}
+
 function afterPlayerTurn (playerWins) {
+  alreadyEndGame = true;
   if (playerWins) {
     alert("congratz!");
   } else {
@@ -103,8 +150,9 @@ export {
   board, 
   moveHistory,
   destination,
-  DOM,
+  domManipulate,
   afterPlayerTurn,
   shortestPath,
   cellBorderHover,
+  undoButton,
 }
