@@ -78,3 +78,7 @@ body {
   border-radius: 100%;
   font-weight: bold;
 }
+
+.black.knight::after {
+  background: red;
+}

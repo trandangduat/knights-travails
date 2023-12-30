@@ -2,6 +2,7 @@ import { handleKnightPiece, knightPieceDOM } from "./knight.js";
 import { BOARD_SIZE, createBoardDOM, newPiece } from "./board.js";
 import { findShortestPath } from "./shortestPath.js";
 import destinationPiece from "./destination_piece.png";
+import hintPieceSouce from "./hint_piece.png";
 
 let source = {
   row: parseInt(Math.random() * BOARD_SIZE),
@@ -39,10 +40,25 @@ function DOM() {
   board.appendChild(knightPiece);
 
   knightPiece.addEventListener("mousedown", handleKnightPiece);
+  
+  // Automove the shortest path when clicking the buttonk
+  const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
+  hintPiece.setAttribute("data-count", "0");
+  hintPiece.classList.add("knight");
+  hintPiece.classList.add("black");
+  let hintPieceCreated = false;
+  
   showShortestPathButton.addEventListener("click", (e) => {
-    moveTo(knightPiece, source.row, source.col);
-    knightPiece.setAttribute("data-count", 0);
-    autoMove(knightPiece, shortestPath); 
+    // Create new piece at source 
+    if (hintPieceCreated === false) {
+      board.appendChild(hintPiece);
+      hintPieceCreated = true;
+    } else {
+      moveTo(hintPiece, source.row, source.col);
+    }
+    
+    hintPiece.setAttribute("data-count", 0);
+    autoMove(hintPiece, shortestPath); 
   });
 }
 

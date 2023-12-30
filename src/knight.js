@@ -97,7 +97,7 @@ function handleKnightPiece (event) {
     // Get the cell under cursor
     let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
 
-    // If the cell is valid next move then places it there, else goes back to inital position
+    // If the cell is valid next move then places it there, else goes back to initial position
     if (validNextMoves.some(move => move.row === cellPos.row && move.col === cellPos.col)) {
       moveHistory.push(cellPos);
       movingToCell(cellPos.row, cellPos.col);

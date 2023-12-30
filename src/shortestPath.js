@@ -16,7 +16,7 @@ function findShortestPath (S, D, N = BOARD_SIZE) {
   }
 
   // Using BFS to search for the shortest path
-  let queue = new Array();
+  let queue = [];
   let top = 0;
   dist[S.row][S.col] = 0;
   queue.push({ 
