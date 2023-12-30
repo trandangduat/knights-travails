@@ -6,6 +6,7 @@ import {
   destination,
   afterPlayerTurn,
   shortestPath,
+  cellBorderHover,
 } from "./DOM.js";
 import { 
   isInsideBoard, 
@@ -87,6 +88,9 @@ function handleKnightPiece (event) {
   }
   
   function handleMouseMove (event) {
+    cellBorderHover.style.visibility = "visible";
+    let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
+    cellBorderHover.style.transform = `translate(${cellPos.col * 100}%, ${cellPos.row * 100}%)`;
     movingTo(
       (event.pageX - board.offsetLeft - piece.offsetWidth / 2) / getCellDOM(0, 0).offsetWidth, 
       (event.pageY - board.offsetTop - piece.offsetHeight / 2) / getCellDOM(0, 0).offsetHeight, 
@@ -96,7 +100,6 @@ function handleKnightPiece (event) {
   function handleMouseUp (event) {
     // Get the cell under cursor
     let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
-    console.log(cellPos);
 
     // If the cell is valid next move then places it there, else goes back to initial position
     if (validNextMoves.some(move => move.row === cellPos.row && move.col === cellPos.col)) {
@@ -121,10 +124,11 @@ function handleKnightPiece (event) {
     document.removeEventListener("mousemove", handleMouseMove);
     piece.removeEventListener("mouseup", handleMouseUp);
     
-    // Remove next move indicators (guide dots)
+    // Remove indicators (next valid moves indicator, cell on mouse position indicator)
     guideDots.forEach((dot) => { 
       dot.style.display = "none" 
     });
+    cellBorderHover.style.visibility = "hidden";
     
     // Remove Highlight
     toggleHighlight(initCell.row, initCell.col);

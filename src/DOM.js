@@ -26,7 +26,14 @@ const moveHistory = [];
 const shortestPath = findShortestPath(source, destination);
 const showShortestPathButton = document.querySelector("#show-sp")
 
+// Add cell indicator for mouse position
+const cellBorderHover = document.createElement("div");
+cellBorderHover.setAttribute("id", "hover-border");
+cellBorderHover.style.visibility = "hidden";
+board.appendChild(cellBorderHover);
+
 function DOM() {
+  
   // Place a piece in random cell as destination 
   const desPiece = newPiece(destinationPiece, destination.row, destination.col);
   desPiece.style.pointerEvents = "none";
@@ -42,7 +49,7 @@ function DOM() {
 
   knightPiece.addEventListener("mousedown", handleKnightPiece);
   
-  // Automove the shortest path when clicking the buttonk
+  // Automove the shortest path when clicking the button
   const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
   hintPiece.setAttribute("data-count", "0");
   hintPiece.classList.add("knight");
@@ -99,4 +106,5 @@ export {
   DOM,
   afterPlayerTurn,
   shortestPath,
+  cellBorderHover,
 }

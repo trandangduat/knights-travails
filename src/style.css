@@ -58,12 +58,17 @@ body {
   left: 50%;
 }
 
-.piece {
+.piece, #hover-border {
   aspect-ratio: 1/1;
   width: calc(var(--board-size) / 8);
   position: absolute;
   z-index: 9999;
   cursor: -webkit-grab;
+}
+
+#hover-border {
+  border: 4px solid rgb(255 255 255 / 30%);
+  box-sizing: border-box;
 }
 
 .knight::after {
