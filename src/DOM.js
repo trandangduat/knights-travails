@@ -76,22 +76,24 @@ function domManipulate() {
   });
 
   startButton.addEventListener("click", (event) => {
-    const SECONDS = 5;
     console.log("start countDown");
-    let second = 0;
+    const SECONDS = 5;
     let milisec = 0;
+    
     const updateCountdown = setInterval(() => {
-      if (milisec % 1000 === 0) {
+      if (milisec && milisec % 1000 === 0) {
         console.log(milisec / 1000 + " seconds");
       }
       if (alreadyEndGame) {
         console.log("already end game");
         clearTimeout(countDown);
         clearInterval(updateCountdown);
+        return;
       }
       milisec += 100;
-      countDownProgressBar.style.width = `${milisec / 50}%`;
+      countDownProgressBar.style.width = `${milisec / (SECONDS * 10)}%`;
     }, 100);
+    
     const countDown = setTimeout(() => {
       if (!alreadyEndGame) {
         afterPlayerTurn(false);
@@ -113,6 +115,7 @@ function moveTo (piece, row, col) {
 
 function autoMove (piece, movesList) {
   let i = 0;
+  piece.style.transition = "300ms";
   let moving = setInterval(() => {
     if (i == movesList.length) {
       clearInterval(moving);
