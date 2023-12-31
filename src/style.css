@@ -1,23 +1,38 @@
 @import 'reset.css';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&family=VT323&display=swap');
 
 :root {
   --dark-cell: #779954;
   --bright-cell: #e9edcc;
-  --highlight-cell: rgb(205 191 0 / 62%); 
+  --sea-color: #201729;
   --ground-pattern: url("./tree-pattern.png");
   --rock-pattern: url("./rock-pattern.png");
-  --sea-color: #201729;
+  --sea-pattern: url("./water-pattern.png");
+  --button-pattern: url("./button.png");
   --board-size: 80vh;
+  --pixel-font: 'VT323', monospace;
+  --poppin-font: 'Poppins', sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+  image-rendering: pixelated;
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background: var(--sea-color);
+  font-family: var(--pixel-font);
+  background: var(--sea-pattern);
+}
+
+button {
+  font-family: var(--pixel-font);
+  font-size: 1.5rem;
+  outline: 0;
+  border: 0;
+  background: var(--button-pattern);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 5px 0 20px 0;
 }
 
 #board-container {
@@ -32,15 +47,25 @@ body {
   background-size: 8%;
   background-clip: content-box;
   border: 20px solid transparent;
-  border-image: url("./border.png") 30% round;
+  border-image: url("./border.png") 20% round;
+  box-shadow: 10px 10px rgb(0 0 0 / 20%);
+  border-radius: 5px;
 }
 
 #board-container .row {
   display: flex;
 }
 
-.cell.highlight {
-  background: var(--highlight-cell)!important;
+.cell.highlight::after {
+  content: "";
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: rgb(255 193 7 / 50%)!important;
+  border-radius: 10px;
 }
 
 .cell.black {
@@ -81,10 +106,10 @@ body {
 
 #hover-border {
   pointer-events: none;
-  border: 4px solid rgb(255 255 255 / 70%);
+  border: 4px solid #FFC107;
   box-sizing: border-box;
   z-index: 9;
-  /* box-shadow: 2px 2px 100px rgb(255 255 255 / 40%); */
+  border-radius: 8px;
 }
 
 .knight::after {
@@ -116,3 +141,14 @@ body {
   transition: 100ms;
   background: green;
 }
+
+#control {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
