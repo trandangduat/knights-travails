@@ -5,7 +5,10 @@
   --dark-cell: #779954;
   --bright-cell: #e9edcc;
   --highlight-cell: rgb(205 191 0 / 62%); 
-  --board-size: 90vh;
+  --ground-pattern: url("./tree-pattern.png");
+  --rock-pattern: url("./rock-pattern.png");
+  --sea-color: #201729;
+  --board-size: 80vh;
 }
 
 * {
@@ -14,9 +17,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-image: url("./tree-pattern.jpg");
-  background-position: center;
-  background-size: 6rem;
+  background: var(--sea-color);
 }
 
 #board-container {
@@ -26,8 +27,12 @@ body {
   width: var(--board-size);
   margin: auto;
   position: relative;
-  /* border: 15px solid transparent; */
-  /* border-image: url("./board-border.png") 20 round; */
+  background-image: var(--ground-pattern);
+  background-position: center;
+  background-size: 8%;
+  background-clip: content-box;
+  border: 20px solid transparent;
+  border-image: url("./border.png") 30% round;
 }
 
 #board-container .row {
@@ -39,20 +44,16 @@ body {
 }
 
 .cell.black {
-  /* background: var(--dark-cell); */
-  background-image: url("./dirt-pattern.jpg");
-  box-shadow: inset -4px -4px 5px rgb(71 56 45 / 50%);
+  background-image: var(--rock-pattern);
+  background-size: 100%;
+  background-repeat: no-repeat;
   z-index: 1;
 }
 
 .cell {
   aspect-ratio: 1/1;
   flex: 1;
-  /* background: var(--bright-cell); */
   position: relative;
-  /* background-image: url("./tree-pattern.jpg"); */
-  background-position: center;
-  background-size: contain;
 }
 
 .cell > .guide-dot {
@@ -82,6 +83,7 @@ body {
   pointer-events: none;
   border: 4px solid rgb(255 255 255 / 70%);
   box-sizing: border-box;
+  z-index: 9;
   /* box-shadow: 2px 2px 100px rgb(255 255 255 / 40%); */
 }
 
