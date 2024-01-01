@@ -55,7 +55,6 @@ let hintPieceCreated = false;
 let alreadyEndGame = false;
 
 function domManipulate() {
-  appendToBoard();
 
   knightPiece.addEventListener("mousedown", handleKnightPiece);
   
@@ -76,7 +75,18 @@ function domManipulate() {
   });
 
   startButton.addEventListener("click", (event) => {
-    console.log("start countDown");
+    console.log("start game");
+    
+    appendToBoard();
+
+    // delete "disabled" class for all elements include that class
+    const disabledElements = document.querySelectorAll(".disabled");
+    disabledElements.forEach((element) => {
+      element.classList.remove("disabled"); 
+    });
+    
+    startButton.remove();
+    
     const SECONDS = 5;
     let milisec = 0;
     

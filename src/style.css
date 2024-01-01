@@ -1,5 +1,5 @@
 @import 'reset.css';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;900&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 :root {
   --dark-cell: #779954;
@@ -11,7 +11,7 @@
   --button-pattern: url("./button.png");
   --board-size: 80vh;
   --pixel-font: 'VT323', monospace;
-  --poppin-font: 'Poppins', sans-serif;
+  --button-font: 'Press Start 2P', cursive;
 }
 
 * {
@@ -23,16 +23,77 @@ body {
   background: var(--sea-pattern);
 }
 
-button {
-  font-family: var(--pixel-font);
-  font-size: 1.5rem;
-  outline: 0;
-  border: 0;
-  background: var(--button-pattern);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  padding: 5px 0 20px 0;
+.btn:hover {
+  background-color: #cbcbcb;
+  box-shadow: inset 
+    calc(var(--shadow-width) - 1px) 
+    calc(var(--shadow-width) - 1px)
+    rgb(0 0 0 / 20%);
+}
+
+.btn:focus, .btn:active {
+  box-shadow: inset 
+    calc(0px - var(--shadow-width)) 
+    calc(0px - var(--shadow-width)) 
+    rgb(0 0 0 / 20%);
+}
+
+.btn {
+  --border-width: 4px;
+  --shadow-width: -4px;
+  cursor: pointer;
+  font-family: var(--button-font);
+  padding: 12px 12px;
+  position: relative;
+  background: #d4d4d4;
+  display: inline-block;
+  border-top: var(--border-width) solid;
+  border-bottom: var(--border-width) solid;
+  border-color: black;
+  box-shadow: inset var(--shadow-width) var(--shadow-width) rgb(0 0 0 / 20%);
+  text-shadow: 0px 3px rgb(0 0 0 / 10%);
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  border-left: var(--border-width) solid;
+  border-right: var(--border-width) solid;
+  border-color: black;
+  box-sizing: content-box;
+  left: -4px;
+  top: 0px;
+}
+
+#start-game {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  background-color: hsl(124.43deg 62.24% 60%);
+}
+
+#start-game:hover {
+  background-color: hsl(124.43deg 62.24% 57%);
+}
+
+#show-sp:hover {
+  background-color: hsl(183.77deg 60% 57%);
+}
+
+#show-sp {
+  background-color: hsl(183.77deg 60% 60%);
+}
+
+#undo:hover {
+    background-color: hsl(60deg 80% 45%);
+}
+#undo {
+    background-color: hsl(60deg 80% 50%);
 }
 
 #board-container {
@@ -143,12 +204,16 @@ button {
 }
 
 #control {
-  position: fixed;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  left: 0;
-  top: 0;
-  height: 100%;
+  flex-direction: row;
+  gap: 20px;
+  width: var(--board-size);
+  margin: 10px auto;
+  align-items: center;
+}
+
+.disabled {
+  filter: brightness(0.5);
+  pointer-events: none;
 }
 
