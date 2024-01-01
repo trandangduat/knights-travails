@@ -191,16 +191,7 @@ body {
 }
 
 #countdown {
-  width: 100px;
-  height: 50px;
-  border: 1px solid;
-  overflow: hidden;
-}
-
-#countdown #progress {
-  height: 100%;
-  transition: 100ms;
-  background: green;
+  font-family: var(--button-font);
 }
 
 #control {

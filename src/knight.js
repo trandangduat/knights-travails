@@ -109,12 +109,10 @@ function handleKnightPiece (event) {
       // If we reach the destination
       if (cellPos.row === destination.row && cellPos.col === destination.col) {
         setTimeout(afterPlayerTurn.bind(null, true), 100);
-        clearTimeout();
       }
       // If the number of moves exceeds the smallest number of moves needed
       else if (moveHistory.length >= shortestPath.length) {
         setTimeout(afterPlayerTurn.bind(null, false), 100);
-        clearTimeout();
       }      
     } else {
       movingToCell(initCell.row, initCell.col);

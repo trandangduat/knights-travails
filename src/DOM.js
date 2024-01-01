@@ -88,21 +88,20 @@ function domManipulate() {
     startButton.remove();
     
     const SECONDS = 5;
-    let milisec = 0;
+    let total = 0;
     
     const updateCountdown = setInterval(() => {
-      if (milisec && milisec % 1000 === 0) {
-        console.log(milisec / 1000 + " seconds");
-      }
+      let s = SECONDS - 1 - parseInt(total / 1000);
+      let ss = (1000 - (total % 1000)) / 10;
+      countDownProgressBar.innerText = `0${s}:${ss}`;
       if (alreadyEndGame) {
         console.log("already end game");
         clearTimeout(countDown);
         clearInterval(updateCountdown);
         return;
       }
-      milisec += 100;
-      countDownProgressBar.style.width = `${milisec / (SECONDS * 10)}%`;
-    }, 100);
+      total += 10;
+    }, 10);
     
     const countDown = setTimeout(() => {
       if (!alreadyEndGame) {
