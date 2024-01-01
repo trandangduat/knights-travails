@@ -68,6 +68,12 @@ body {
   top: 0px;
 }
 
+.btn .unicode-icon {
+    margin-right: 10px;
+    position: relative;
+    top: -4px;
+}
+
 #start-game {
   position: fixed;
   top: 50%;
@@ -192,6 +198,7 @@ body {
 
 #countdown {
   font-family: var(--button-font);
+  flex: 1;
 }
 
 #control {
@@ -208,3 +215,10 @@ body {
   pointer-events: none;
 }
 
+#progress {
+  display: block;
+  width: max-content;
+  float: right;
+  font-size: 1.5rem;
+  padding: 5px 20px;
+}

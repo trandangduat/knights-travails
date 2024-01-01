@@ -92,7 +92,10 @@ function domManipulate() {
     
     const updateCountdown = setInterval(() => {
       let s = SECONDS - 1 - parseInt(total / 1000);
-      let ss = (1000 - (total % 1000)) / 10;
+      let ss = parseInt((999 - (total % 1000)) / 10);
+      if (ss < 10) {
+        ss = '0' + ss;
+      }
       countDownProgressBar.innerText = `0${s}:${ss}`;
       if (alreadyEndGame) {
         console.log("already end game");
