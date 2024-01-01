@@ -8,14 +8,16 @@
 </head>
 <body>
     <div id = "control">
-      <button id = "start-game">START</button>
-      <button id = "show-sp">Hint</button>
-      <button id = "undo">Undo</button>
+      <div class = "btn disabled" id = "show-sp">Hint</div>
+      <div class = "btn disabled" id = "undo">Undo</div>
       <div id = "countdown">
         <div id = "progress" style="width: 0%;"></div>
       </div>
     </div>
-    <div id = "board-container">
+    <div class = "overlay">
+      <div class = "btn" id = "start-game"> START</div>
+      <div id = "board-container" class = "disabled">
+      </div>
     </div>
 </body>
 </html>
