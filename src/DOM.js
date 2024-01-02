@@ -51,7 +51,7 @@ knightPiece.classList.add("knight");
 const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
 hintPiece.setAttribute("data-count", "0");
 hintPiece.classList.add("knight");
-hintPiece.classList.add("black");
+hintPiece.classList.add("hint");
 hintPiece.style.pointerEvents = "none";
 
 let hintPieceCreated = false;

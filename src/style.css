@@ -163,6 +163,14 @@ body {
   left: 50%;
 }
 
+#hover-border {
+  pointer-events: none;
+  border: 4px solid #FFC107;
+  box-sizing: border-box;
+  z-index: 9;
+  border-radius: 8px;
+}
+
 .piece {
   z-index: 69;
 }
@@ -178,12 +186,8 @@ body {
   background-size: 70%!important;
 }
 
-#hover-border {
-  pointer-events: none;
-  border: 4px solid #FFC107;
-  box-sizing: border-box;
-  z-index: 9;
-  border-radius: 8px;
+.hint.piece::after {
+  background: yellow;
 }
 
 .knight::after {
@@ -191,7 +195,7 @@ body {
   display: block;
   position: absolute;
   color: black;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
   left: 50%;
   top: 0;
