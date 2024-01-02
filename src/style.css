@@ -21,6 +21,8 @@
 body {
   font-family: var(--pixel-font);
   background: var(--sea-pattern);
+  background-position: center;
+  background-size: 3%;
 }
 
 .btn:hover {
@@ -69,9 +71,13 @@ body {
 }
 
 .btn .unicode-icon {
-    margin-right: 10px;
-    position: relative;
-    top: -4px;
+  margin-right: 10px;
+  position: relative;
+  top: -4px;
+}
+
+#start-game:hover {
+  background-color: hsl(124.43deg 62.24% 65%);
 }
 
 #start-game {
@@ -83,12 +89,9 @@ body {
   background-color: hsl(124.43deg 62.24% 60%);
 }
 
-#start-game:hover {
-  background-color: hsl(124.43deg 62.24% 57%);
-}
 
 #show-sp:hover {
-  background-color: hsl(183.77deg 60% 57%);
+  background-color: hsl(183.77deg 60% 65%);
 }
 
 #show-sp {
@@ -96,10 +99,10 @@ body {
 }
 
 #undo:hover {
-    background-color: hsl(60deg 80% 45%);
+  background-color: hsl(60deg 80% 60%);
 }
 #undo {
-    background-color: hsl(60deg 80% 50%);
+  background-color: hsl(60deg 80% 50%);
 }
 
 #board-container {
@@ -149,15 +152,16 @@ body {
 }
 
 .cell > .guide-dot {
-  width: 35%;
+  width: 15%;
   aspect-ratio: 1/1;
-  background: rgb(0 0 0 / 20%);
+  background: white;
   display: none;
   border-radius: 100%;
   position: relative;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
+  box-shadow: 0 0 10px #FFEB3B, 0 0 20px #FFEB3B;
 }
 
 .piece {
@@ -171,6 +175,10 @@ body {
   cursor: -webkit-grab;
 }
 
+.piece.destination {
+  background-size: 70%!important;
+}
+
 #hover-border {
   pointer-events: none;
   border: 4px solid #FFC107;
@@ -179,22 +187,20 @@ body {
   border-radius: 8px;
 }
 
-.knight::after {
-  content: attr(data-count);
-  background: black;
-  display: block;
-  position: absolute;
-  color: white;
-  right: 0;
-  padding: 5px;
-  font-size: 1.5rem;
-  border-radius: 100%;
-  font-weight: bold;
-}
-
-.black.knight::after {
-  background: red;
-}
+/* .knight::after { */
+/*   content: attr(data-count); */
+/*   display: block; */
+/*   position: absolute; */
+/*   color: black; */
+/*   font-size: 1.5rem; */
+/*   font-weight: bold; */
+/*   left: 50%; */
+/*   top: 0; */
+/*   transform: translate(-50%, -50%); */
+/*   outline: 3px solid black; */
+/*   background: white; */
+/*   padding: 0 5px; */
+/* } */
 
 #countdown {
   font-family: var(--button-font);

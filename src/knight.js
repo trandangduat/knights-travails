@@ -1,5 +1,7 @@
-import blackKnightImage from "./knight_piece.png";
-import whiteKnightImage from "./knight_piece.png";
+import knightImage from "./knight_piece.png";
+import knightImage_right from "./knight_piece_right.png";
+import knightMovingImage from "./knight_piece_mousemove.png";
+import knightMovingImage_right from "./knight_piece_mousemove_right.png";
 import {
   board,
   moveHistory,
@@ -7,6 +9,7 @@ import {
   afterPlayerTurn,
   shortestPath,
   cellBorderHover,
+  alreadyEndGame,
 } from "./DOM.js";
 import { 
   isInsideBoard, 
@@ -15,6 +18,8 @@ import {
   boardCellAtPosition,
   newPiece,
 } from "./board.js";
+
+const BOARD_BORDER = 20;
 
 let rowDir = [-2, -1, 1, 2,  2,  1, -1, -2];
 let colDir = [ 1,  2, 2, 1, -1, -2, -2, -1];
@@ -25,9 +30,9 @@ function Knight (row, col) {
 
 function knightPieceDOM (cellRow = 0, cellCol = 0, isBlack = false) {
   if (!isBlack) {
-    return newPiece(whiteKnightImage, cellRow, cellCol);
+    return newPiece(knightImage, cellRow, cellCol);
   } else {
-    return newPiece(blackKnightImage, cellRow, cellCol);
+    return newPiece(knightImage, cellRow, cellCol);
   }
 }
 
@@ -37,7 +42,8 @@ function handleKnightPiece (event) {
   const initCell = getPieceCell(); // Get current position of the piece
   const validNextMoves = getValidNextMoves(initCell.row, initCell.col); 
   const guideDots = [];
-
+  
+  
   // Highlight current cell the piece is in
   toggleHighlight(initCell.row, initCell.col);
 
@@ -89,18 +95,39 @@ function handleKnightPiece (event) {
   
   function handleMouseMove (event) {
     cellBorderHover.style.visibility = "visible";
-    let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
+    let xCord = event.pageX - board.offsetLeft - BOARD_BORDER;
+    let yCord = event.pageY - board.offsetTop - BOARD_BORDER;
+    let cellPos = boardCellAtPosition(xCord, yCord);
+    //Change piece background state
+    if (cellPos.col < initCell.col) {
+      piece.style.backgroundImage = `url(${knightMovingImage})`;
+    } else {
+      piece.style.backgroundImage = `url(${knightMovingImage_right})`;
+    }
+    
     cellBorderHover.style.transform = `translate(${cellPos.col * 100}%, ${cellPos.row * 100}%)`;
     movingTo(
-      (event.pageX - board.offsetLeft - piece.offsetWidth / 2) / getCellDOM(0, 0).offsetWidth, 
-      (event.pageY - board.offsetTop - piece.offsetHeight / 2) / getCellDOM(0, 0).offsetHeight, 
+      (event.pageX - board.offsetLeft - piece.offsetWidth / 2 - BOARD_BORDER) / getCellDOM(0, 0).offsetWidth, 
+      (event.pageY - board.offsetTop - piece.offsetHeight / 2 - BOARD_BORDER) / getCellDOM(0, 0).offsetHeight, 
     );
+    if (alreadyEndGame) {
+      handleMouseUp(event);
+    }
   }
 
   function handleMouseUp (event) {
     // Get the cell under cursor
-    let cellPos = boardCellAtPosition(event.pageX - board.offsetLeft, event.pageY - board.offsetTop);
+    let xCord = event.pageX - board.offsetLeft - BOARD_BORDER;
+    let yCord = event.pageY - board.offsetTop - BOARD_BORDER;
+    let cellPos = boardCellAtPosition(xCord, yCord);
 
+    // Set piece background to normal
+    if (cellPos.col < initCell.col) {
+      piece.style.backgroundImage = `url(${knightImage})`;
+    } else {
+      piece.style.backgroundImage = `url(${knightImage_right})`;
+    }
+    
     // If the cell is valid next move then places it there, else goes back to initial position
     if (validNextMoves.some(move => move.row === cellPos.row && move.col === cellPos.col)) {
       moveHistory.push(cellPos);

@@ -37,6 +37,7 @@ board.appendChild(cellBorderHover);
 
 // Place a piece in random cell as destination 
 const desPiece = newPiece(destinationPiece, destination.row, destination.col);
+desPiece.classList.add("destination");
 desPiece.style.pointerEvents = "none";
 
 // Place a knight in random cell as source
@@ -154,6 +155,7 @@ function undoMove(piece) {
 
 function afterPlayerTurn (playerWins) {
   alreadyEndGame = true;
+  board.style.pointerEvents = "none";
   if (playerWins) {
     alert("congratz!");
   } else {
@@ -170,4 +172,5 @@ export {
   shortestPath,
   cellBorderHover,
   undoButton,
+  alreadyEndGame,
 }
