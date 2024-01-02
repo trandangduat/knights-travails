@@ -152,16 +152,15 @@ body {
 }
 
 .cell > .guide-dot {
-  width: 15%;
+  width: 30%;
   aspect-ratio: 1/1;
-  background: white;
+  background: rgb(0 0 0 / 20%);
   display: none;
   border-radius: 100%;
   position: relative;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  box-shadow: 0 0 10px #FFEB3B, 0 0 20px #FFEB3B;
 }
 
 .piece {
@@ -187,20 +186,20 @@ body {
   border-radius: 8px;
 }
 
-/* .knight::after { */
-/*   content: attr(data-count); */
-/*   display: block; */
-/*   position: absolute; */
-/*   color: black; */
-/*   font-size: 1.5rem; */
-/*   font-weight: bold; */
-/*   left: 50%; */
-/*   top: 0; */
-/*   transform: translate(-50%, -50%); */
-/*   outline: 3px solid black; */
-/*   background: white; */
-/*   padding: 0 5px; */
-/* } */
+.knight::after {
+  content: attr(data-count);
+  display: block;
+  position: absolute;
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  outline: 3px solid black;
+  background: white;
+  padding: 0 5px;
+}
 
 #countdown {
   font-family: var(--button-font);
@@ -228,3 +227,16 @@ body {
   font-size: 1.5rem;
   padding: 5px 20px;
 }
+
+#player-path .line {
+  stroke: white;
+  stroke-width: 3;
+  stroke-dasharray: 5 5;
+}
+
+#hint-path .line {
+  stroke: yellow;
+  stroke-width: 3;
+  stroke-dasharray: 5 5;
+}
+

@@ -10,6 +10,7 @@ import {
   shortestPath,
   cellBorderHover,
   alreadyEndGame,
+  playerPath,
 } from "./DOM.js";
 import { 
   isInsideBoard, 
@@ -17,15 +18,30 @@ import {
   getCellDOM, 
   boardCellAtPosition,
   newPiece,
+  createLine,
 } from "./board.js";
+
+function Knight (row, col) {
+  return { row, col }; 
+}
 
 const BOARD_BORDER = 20;
 
 let rowDir = [-2, -1, 1, 2,  2,  1, -1, -2];
 let colDir = [ 1,  2, 2, 1, -1, -2, -2, -1];
+// let dirAngle = [-60, -30, 30, 60, 120, 150, -150, -120];
+let dirAngle = [-63, -27, 27, 63, 117, 153, -153, -117];
+let angleDirMap = {};
 
-function Knight (row, col) {
-  return { row, col }; 
+for (let i = 0; i < rowDir.length; i++) {
+  const key = rowDir[i] + ',' + colDir[i];
+  angleDirMap[key] = dirAngle[i];
+}
+
+// Function to map rowDir and colDir to dirAngle
+function getDirAngle(rowDif, colDif) {
+  const key = rowDif + ',' + colDif;
+  return angleDirMap[key] || null; // Return null if pair not found
 }
 
 function knightPieceDOM (cellRow = 0, cellCol = 0, isBlack = false) {
@@ -97,15 +113,15 @@ function handleKnightPiece (event) {
     cellBorderHover.style.visibility = "visible";
     let xCord = event.pageX - board.offsetLeft - BOARD_BORDER;
     let yCord = event.pageY - board.offsetTop - BOARD_BORDER;
-    let cellPos = boardCellAtPosition(xCord, yCord);
+    let nextCell = boardCellAtPosition(xCord, yCord);
     //Change piece background state
-    if (cellPos.col < initCell.col) {
+    if (nextCell.col < initCell.col) {
       piece.style.backgroundImage = `url(${knightMovingImage})`;
     } else {
       piece.style.backgroundImage = `url(${knightMovingImage_right})`;
     }
     
-    cellBorderHover.style.transform = `translate(${cellPos.col * 100}%, ${cellPos.row * 100}%)`;
+    cellBorderHover.style.transform = `translate(${nextCell.col * 100}%, ${nextCell.row * 100}%)`;
     movingTo(
       (event.pageX - board.offsetLeft - piece.offsetWidth / 2 - BOARD_BORDER) / getCellDOM(0, 0).offsetWidth, 
       (event.pageY - board.offsetTop - piece.offsetHeight / 2 - BOARD_BORDER) / getCellDOM(0, 0).offsetHeight, 
@@ -115,26 +131,31 @@ function handleKnightPiece (event) {
     }
   }
 
+
   function handleMouseUp (event) {
     // Get the cell under cursor
     let xCord = event.pageX - board.offsetLeft - BOARD_BORDER;
     let yCord = event.pageY - board.offsetTop - BOARD_BORDER;
-    let cellPos = boardCellAtPosition(xCord, yCord);
+    let nextCell = boardCellAtPosition(xCord, yCord);
 
-    // Set piece background to normal
-    if (cellPos.col < initCell.col) {
+    // Set piece background to normal (cat staying still) 
+    if (nextCell.col < initCell.col) {
       piece.style.backgroundImage = `url(${knightImage})`;
     } else {
       piece.style.backgroundImage = `url(${knightImage_right})`;
     }
     
     // If the cell is valid next move then places it there, else goes back to initial position
-    if (validNextMoves.some(move => move.row === cellPos.row && move.col === cellPos.col)) {
-      moveHistory.push(cellPos);
-      movingToCell(cellPos.row, cellPos.col);
+    if (validNextMoves.some(move => move.row === nextCell.row && move.col === nextCell.col)) {
+      // Create a line connecting initCell & nextCell
+      playerPath.appendChild(createLine(initCell.row, initCell.col, nextCell.row, nextCell.col));
+      
+      moveHistory.push(nextCell);
+      movingToCell(nextCell.row, nextCell.col);
       piece.setAttribute("data-count", moveHistory.length);
+      
       // If we reach the destination
-      if (cellPos.row === destination.row && cellPos.col === destination.col) {
+      if (nextCell.row === destination.row && nextCell.col === destination.col) {
         setTimeout(afterPlayerTurn.bind(null, true), 100);
       }
       // If the number of moves exceeds the smallest number of moves needed
@@ -167,5 +188,6 @@ export {
   Knight,
   knightPieceDOM,
   handleKnightPiece,
+  getDirAngle,
 };
 

@@ -1,3 +1,5 @@
+import { getDirAngle } from "./knight.js";
+
 const BOARD_SIZE = 8;
 const boardContainer = document.querySelector("#board-container");
 
@@ -24,6 +26,20 @@ function boardCellAtPosition (x, y) {
   row = parseInt(row);
   col = parseInt(col);
   return {row, col};
+}
+
+function createLine (r1, c1, r2, c2) { // create a line connected cell (r1, c1) with cell (r2, c2)
+  let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", "0%");
+  line.setAttribute("y1", "0%");
+  line.setAttribute("x2", "27.951%"); // Using Pythagoras: sqrt(1 * 1 + 2 * 2) * 12.5%
+  line.setAttribute("y2", "0%");
+  
+  let _translate = `translate(calc(12.5% * ${parseFloat(c1) + 0.5}), calc(12.5% * ${parseFloat(r1) + 0.5}))`;
+  let _rotate = `rotate(${getDirAngle(r2 - r1, c2 - c1)}deg)`;
+  line.setAttribute("style", `transform: ${_translate} ${_rotate}`);
+  line.classList.add("line");
+  return line;
 }
 
 function createBoardDOM() {
@@ -66,4 +82,5 @@ export {
   getCellDOM,
   boardCellAtPosition,
   newPiece,
+  createLine,
 };

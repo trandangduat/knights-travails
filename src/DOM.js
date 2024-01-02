@@ -1,5 +1,5 @@
 import { handleKnightPiece, knightPieceDOM } from "./knight.js";
-import { BOARD_SIZE, createBoardDOM, newPiece } from "./board.js";
+import { BOARD_SIZE, createBoardDOM, newPiece, createLine } from "./board.js";
 import { findShortestPath } from "./shortestPath.js";
 import destinationPiece from "./destination_piece.png";
 import hintPieceSouce from "./hint_piece.png";
@@ -28,6 +28,8 @@ const showShortestPathButton = document.querySelector("#show-sp")
 const undoButton = document.querySelector("#undo");
 const startButton = document.querySelector("#start-game");
 const countDownProgressBar = document.querySelector("#countdown #progress");
+const playerPath = document.querySelector("#player-path svg");
+const hintPath = document.querySelector("#hint-path svg");
 
 // Add cell indicator for mouse position
 const cellBorderHover = document.createElement("div");
@@ -133,10 +135,14 @@ function autoMove (piece, movesList) {
     if (i == movesList.length) {
       clearInterval(moving);
       piece.style.transition = "none";
-      console.log("done automove!");
       return;
     }
     moveTo(piece, movesList[i].row, movesList[i].col);
+    if (i > 0) {
+      hintPath.appendChild(createLine(movesList[i - 1].row, movesList[i - 1].col, movesList[i].row, movesList[i].col));
+    } else {
+      hintPath.appendChild(createLine(source.row, source.col, movesList[i].row, movesList[i].col));
+    }
     piece.setAttribute("data-count", i + 1);
     i++;
   }, 1000);
@@ -151,6 +157,8 @@ function undoMove(piece) {
     moveTo(piece, source.row, source.col);
   }
   piece.setAttribute("data-count", moveHistory.length);
+  // remove the previous line drawn
+  playerPath.lastElementChild.remove();
 }
 
 function afterPlayerTurn (playerWins) {
@@ -173,4 +181,5 @@ export {
   cellBorderHover,
   undoButton,
   alreadyEndGame,
+  playerPath,
 }
