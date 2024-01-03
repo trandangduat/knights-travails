@@ -4,7 +4,10 @@ import { findShortestPath } from "./shortestPath.js";
 import destinationPiece from "./destination_piece.png";
 import hintPieceSrc from "./hint_piece.png";
 import hintPieceSrc_left from "./hint_piece_left.png";
+import { Noti } from "./noti.js";
 
+let hintPieceCreated = false;
+let alreadyEndGame = false;
 let source = {
   row: parseInt(Math.random() * BOARD_SIZE),
   col: parseInt(Math.random() * BOARD_SIZE)
@@ -55,11 +58,7 @@ hintPiece.classList.add("knight");
 hintPiece.classList.add("hint");
 hintPiece.style.pointerEvents = "none";
 
-let hintPieceCreated = false;
-let alreadyEndGame = false;
-
 function domManipulate() {
-
   knightPiece.addEventListener("mousedown", handleKnightPiece);
   
   showShortestPathButton.addEventListener("click", (event) => {
@@ -98,7 +97,7 @@ function domManipulate() {
     
     const countDown = setTimeout(() => {
       if (!alreadyEndGame) {
-        afterPlayerTurn(false);
+        endGame(false, "You're out of time!");
       } 
       clearTimeout(countDown);
       clearInterval(updateCountdown);
@@ -163,14 +162,36 @@ function undoMove(piece) {
   playerPath.lastElementChild.remove();
 }
 
-function afterPlayerTurn (playerWins) {
+const randomWinGif = [
+  "https://giphy.com/embed/CXCDyaiHnEm2m0OuWG",
+  "https://giphy.com/embed/3oEduKoCblNVAgAbYI",
+  "https://giphy.com/embed/Cdkk6wFFqisTe",
+];
+
+function getRandomGif() {
+  return randomWinGif[parseInt(Math.random() * 2)];
+}
+
+function endGame (playerWins, description = "") {
   alreadyEndGame = true;
   board.style.pointerEvents = "none";
+  let header = "";
   if (playerWins) {
-    alert("congratz!");
+    header = "<h1 id = 'win'>You've won</h1>";
+    description = `<iframe src=${getRandomGif()} width="100%" height="100%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>`;
   } else {
-    alert("loser");
+    header = "<h1 id = 'lost'>You've lost</h1>";
   }
+  Noti(`
+    <div id = "header">${header}</div>
+    <div id = "body">
+      <p>${description}</p>
+    </div>
+    <div id = "footer">
+      <div class = "btn" id = "show-sp">Solution</div>
+      <a href = "javascript:location.reload();" class = "btn">Try again</a>
+    </div>
+  `);
 }
 
 export {
@@ -178,7 +199,7 @@ export {
   moveHistory,
   destination,
   domManipulate,
-  afterPlayerTurn,
+  endGame,
   shortestPath,
   cellBorderHover,
   undoButton,

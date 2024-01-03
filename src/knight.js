@@ -6,7 +6,7 @@ import {
   board,
   moveHistory,
   destination,
-  afterPlayerTurn,
+  endGame,
   shortestPath,
   cellBorderHover,
   alreadyEndGame,
@@ -156,11 +156,11 @@ function handleKnightPiece (event) {
       
       // If we reach the destination
       if (nextCell.row === destination.row && nextCell.col === destination.col) {
-        setTimeout(afterPlayerTurn.bind(null, true), 100);
+        setTimeout(endGame.bind(null, true), 100);
       }
       // If the number of moves exceeds the smallest number of moves needed
       else if (moveHistory.length >= shortestPath.length) {
-        setTimeout(afterPlayerTurn.bind(null, false), 100);
+        setTimeout(endGame.bind(null, false, "You're out of moves!"), 100);
       }      
     } else {
       movingToCell(initCell.row, initCell.col);
