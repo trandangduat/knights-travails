@@ -2,7 +2,8 @@ import { handleKnightPiece, knightPieceDOM } from "./knight.js";
 import { BOARD_SIZE, createBoardDOM, newPiece, createLine } from "./board.js";
 import { findShortestPath } from "./shortestPath.js";
 import destinationPiece from "./destination_piece.png";
-import hintPieceSouce from "./hint_piece.png";
+import hintPieceSrc from "./hint_piece.png";
+import hintPieceSrc_left from "./hint_piece_left.png";
 
 let source = {
   row: parseInt(Math.random() * BOARD_SIZE),
@@ -48,7 +49,7 @@ knightPiece.setAttribute("data-count", "0");
 knightPiece.classList.add("knight");
 
 // Automove the shortest path when clicking the button
-const hintPiece = newPiece(hintPieceSouce, source.row, source.col);
+const hintPiece = newPiece(hintPieceSrc, source.row, source.col);
 hintPiece.setAttribute("data-count", "0");
 hintPiece.classList.add("knight");
 hintPiece.classList.add("hint");
@@ -78,30 +79,16 @@ function domManipulate() {
   });
 
   startButton.addEventListener("click", (event) => {
-    console.log("start game");
-    
     appendToBoard();
-
-    // delete "disabled" class for all elements include that class
-    const disabledElements = document.querySelectorAll(".disabled");
-    disabledElements.forEach((element) => {
-      element.classList.remove("disabled"); 
-    });
+    removeClass("disabled"); // remove "disabled" class for all elements include "disabled" class
     
     startButton.remove();
     
     const SECONDS = 5;
     let total = 0;
-    
     const updateCountdown = setInterval(() => {
-      let s = SECONDS - 1 - parseInt(total / 1000);
-      let ss = parseInt((999 - (total % 1000)) / 10);
-      if (ss < 10) {
-        ss = '0' + ss;
-      }
-      countDownProgressBar.innerText = `0${s}:${ss}`;
+      countDownProgressBar.style.width = `${total / (SECONDS * 10)}%`;
       if (alreadyEndGame) {
-        console.log("already end game");
         clearTimeout(countDown);
         clearInterval(updateCountdown);
         return;
@@ -119,6 +106,13 @@ function domManipulate() {
   });
 }
 
+function removeClass (className) {
+  const elements = document.querySelectorAll(`.${className}`);
+  elements.forEach((element) => {
+    element.classList.remove(className); 
+  });
+}
+
 function appendToBoard() {
   board.appendChild(desPiece);
   board.appendChild(knightPiece);
@@ -130,19 +124,27 @@ function moveTo (piece, row, col) {
 
 function autoMove (piece, movesList) {
   let i = 0;
-  piece.style.transition = "300ms";
   let moving = setInterval(() => {
     if (i == movesList.length) {
       clearInterval(moving);
-      piece.style.transition = "none";
       return;
     }
-    moveTo(piece, movesList[i].row, movesList[i].col);
     if (i > 0) {
       hintPath.appendChild(createLine(movesList[i - 1].row, movesList[i - 1].col, movesList[i].row, movesList[i].col));
+      if (movesList[i - 1].col > movesList[i].col) {
+        piece.style.backgroundImage = `url(${hintPieceSrc_left})`;
+      } else {
+        piece.style.backgroundImage = `url(${hintPieceSrc})`;
+      }
     } else {
       hintPath.appendChild(createLine(source.row, source.col, movesList[i].row, movesList[i].col));
+      if (source.col > movesList[i].col) {
+        piece.style.backgroundImage = `url(${hintPieceSrc_left})`;
+      } else {
+        piece.style.backgroundImage = `url(${hintPieceSrc})`;
+      }
     }
+    moveTo(piece, movesList[i].row, movesList[i].col);
     piece.setAttribute("data-count", i + 1);
     i++;
   }, 1000);

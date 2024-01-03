@@ -186,6 +186,10 @@ body {
   background-size: 70%!important;
 }
 
+.hint.piece {
+  transition: transform 300ms ease;
+}
+
 .hint.piece::after {
   background: yellow;
 }
@@ -205,11 +209,6 @@ body {
   padding: 0 5px;
 }
 
-#countdown {
-  font-family: var(--button-font);
-  flex: 1;
-}
-
 #control {
   display: flex;
   flex-direction: row;
@@ -224,14 +223,6 @@ body {
   pointer-events: none;
 }
 
-#progress {
-  display: block;
-  width: max-content;
-  float: right;
-  font-size: 1.5rem;
-  padding: 5px 20px;
-}
-
 #player-path .line {
   stroke: white;
   stroke-width: 3;
@@ -244,3 +235,51 @@ body {
   stroke-dasharray: 5 5;
 }
 
+#countdown {
+  --border-width: 4px;
+  flex: 1;
+  border: var(--border-width) solid black;
+  border-left: 0;
+  border-right: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#countdown::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  display: flex;
+  height: 100%;
+  border-left: var(--border-width) solid;
+  border-right: var(--border-width) solid;
+  border-color: black;
+  box-sizing: content-box;
+  left: -4px;
+  top: 0px;
+}
+
+#countdown > #progress {
+  height: 30px;
+  background-image: url("./rainbow.png");
+  background-position: center;
+  background-size: contain;
+  position: relative;
+}
+
+#countdown > #progress::before {
+  content: "";
+  background-image: url("./nyan_cat.png");
+  display: block;
+  position: absolute;
+  height: 150%;
+  aspect-ratio: 1/1;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+  z-index: 99;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
