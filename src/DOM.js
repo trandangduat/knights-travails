@@ -175,6 +175,8 @@ function getRandomGif() {
 function endGame (playerWins, description = "") {
   alreadyEndGame = true;
   board.style.pointerEvents = "none";
+  undoButton.classList.add("disabled");
+  knightPiece.classList.add("disabled");
   let header = "";
   if (playerWins) {
     header = "<h1 id = 'win'>You've won</h1>";
@@ -188,10 +190,26 @@ function endGame (playerWins, description = "") {
       <p>${description}</p>
     </div>
     <div id = "footer">
-      <div class = "btn" id = "show-sp">Solution</div>
+      <div class = "btn close-noti" id = "show-sp">Solution</div>
       <a href = "javascript:location.reload();" class = "btn">Try again</a>
     </div>
   `);
+  const closeNoti = document.querySelector(".close-noti");
+  closeNoti.addEventListener("click", () => {
+    const notis = document.querySelectorAll("#noti-overlay");
+    notis.forEach((noti) => {noti.remove()});
+    
+    // show shortest path
+    if (hintPieceCreated === false) {
+      board.appendChild(hintPiece);
+      hintPieceCreated = true;
+    } else {
+      moveTo(hintPiece, source.row, source.col);
+    }
+    
+    hintPiece.setAttribute("data-count", 0);
+    autoMove(hintPiece, shortestPath); 
+  });
 }
 
 export {

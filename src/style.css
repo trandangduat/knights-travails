@@ -315,10 +315,48 @@ iframe {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   color: white;
-  padding: 45px;
+  padding: 100px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+@keyframes flickerAnimation {
+  0% { text-shadow:0 0 15px; }
+  50%  { text-shadow:0 0 0px; }
+  100% { text-shadow:0 0 15px; }
+}
+@-o-keyframes flickerAnimation{
+  0% { text-shadow:0 0 15px; }
+  50%  { text-shadow:0 0 0px; }
+  100% { text-shadow:0 0 15px; }
+}
+@-moz-keyframes flickerAnimation{
+  0% { text-shadow:0 0 15px; }
+  50%  { text-shadow:0 0 0px; }
+  100% { text-shadow:0 0 15px; }
+}
+@-webkit-keyframes flickerAnimation{
+  0% { text-shadow:0 0 15px; }
+  50%  { text-shadow:0 0 0px; }
+  100% { text-shadow:0 0 15px; }
+}
+
+#noti h1 {
+  text-shadow: 0 0 5px;
+  font-size: 3rem;
+ -webkit-animation: flickerAnimation 1s infinite;
+ -moz-animation: flickerAnimation 1s infinite;
+ -o-animation: flickerAnimation 1s infinite;
+  animation: flickerAnimation 1s infinite;
+}
+
+#noti h1#win {
+  color: yellow;
+}
+
+#noti h1#lose {
+  color: #d0d0d0;
 }
 
 #noti > #header {
@@ -333,8 +371,7 @@ iframe {
 
 #noti > #footer {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 20px;
 }
