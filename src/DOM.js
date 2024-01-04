@@ -5,6 +5,9 @@ import destinationPiece from "./destination_piece.png";
 import hintPieceSrc from "./hint_piece.png";
 import hintPieceSrc_left from "./hint_piece_left.png";
 import { Noti } from "./noti.js";
+import backgroundMusic from "./background_music.mp3";
+import victorySound from "./victory_sound.mp3";
+import failSound from "./fail_sound.mp3";
 
 let hintPieceCreated = false;
 let alreadyEndGame = false;
@@ -34,6 +37,9 @@ const startButton = document.querySelector("#start-game");
 const countDownProgressBar = document.querySelector("#countdown #progress");
 const playerPath = document.querySelector("#player-path svg");
 const hintPath = document.querySelector("#hint-path svg");
+const bgMusic = new Audio(backgroundMusic);
+const winSFX = new Audio(victorySound);
+const loseSFX = new Audio(failSound);
 
 // Add cell indicator for mouse position
 const cellBorderHover = document.createElement("div");
@@ -78,6 +84,7 @@ function domManipulate() {
   });
 
   startButton.addEventListener("click", (event) => {
+    bgMusic.play();
     appendToBoard();
     removeClass("disabled"); // remove "disabled" class for all elements include "disabled" class
     
@@ -173,15 +180,18 @@ function getRandomGif() {
 }
 
 function endGame (playerWins, description = "") {
+  bgMusic.pause();
   alreadyEndGame = true;
   board.style.pointerEvents = "none";
   undoButton.classList.add("disabled");
   knightPiece.classList.add("disabled");
   let header = "";
   if (playerWins) {
+    winSFX.play();
     header = "<h1 id = 'win'>You've won</h1>";
     description = `<iframe src=${getRandomGif()} width="100%" height="100%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>`;
   } else {
+    loseSFX.play();
     header = "<h1 id = 'lost'>You've lost</h1>";
   }
   Noti(`
