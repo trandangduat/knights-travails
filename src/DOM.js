@@ -84,6 +84,11 @@ function domManipulate() {
   });
 
   startButton.addEventListener("click", (event) => {
+    if (!localStorage.getItem("rulesRead")) {
+      let message = `🎮 Welcome to "Cake Chase"! 🍰🐱\n🕒 5 SECONDS to save the fallen cake!\n🐾 Guide the cat using chess knight moves.\n🗺️ Shortest route = victory! (The cat is a perfectionist 🤓☝️)\n🎉 GOOD LUCK, HAVE FUN, and may your quest be as sweet as the missing cake! 🍰`;
+      alert(message);
+      localStorage.setItem("rulesRead", 1);
+    }
     bgMusic.play();
     appendToBoard();
     removeClass("disabled"); // remove "disabled" class for all elements include "disabled" class
@@ -176,7 +181,7 @@ const randomWinGif = [
 ];
 
 function getRandomGif() {
-  return randomWinGif[parseInt(Math.random() * 2)];
+  return randomWinGif[parseInt(Math.random() * 3)];
 }
 
 function endGame (playerWins, description = "") {
@@ -206,6 +211,7 @@ function endGame (playerWins, description = "") {
   `);
   const closeNoti = document.querySelector(".close-noti");
   closeNoti.addEventListener("click", () => {
+    bgMusic.play();
     const notis = document.querySelectorAll("#noti-overlay");
     notis.forEach((noti) => {noti.remove()});
     

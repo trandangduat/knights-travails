@@ -36,6 +36,10 @@ iframe {
   overflow: hidden;
 }
 
+.swal2-container {
+  z-index: 999999;
+}
+
 .btn:hover {
   background-color: #cbcbcb;
   box-shadow: inset 
